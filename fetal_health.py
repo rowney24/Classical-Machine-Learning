@@ -50,14 +50,12 @@ X_train, X_test, y_train, y_test = train_test_split( X, y, test_size=0.33, rando
 rf_fetus = RandomForestClassifier(n_estimators=10000, random_state=0, n_jobs=-1)
 rf_fetus.fit(X_train,y_train)
 
-#Checking the most important feautures
-
-
+#Checking the most important feautures and plotting as bar chats
 plt.bar(X.columns, rf_fetus.feature_importances_)
 plt.xticks(rotation = 90) # Rotates X-Axis Ticks by 45-degrees
 
 #Selecting the most important features
-sfm_fetus = SelectFromModel(rf_fetus, threshold=0.05) #Threshold selected according to the coefficients of the most important features
+sfm_fetus = SelectFromModel(rf_fetus, threshold=0.01) #Threshold selected according to the coefficients of the most important features
 
 #Train the selector
 sfm_fetus.fit(X_train, y_train)
@@ -76,6 +74,23 @@ fetus_important_rf.fit(X_important_train, y_train)
 
 
 
+# Prediction for a model with selected features
+y_predSELECTED = fetus_important_rf.predict(X_important_test)
+# Acuracy of model with all features
+accuracy_score(y_test, y_predSELECTED)    # - for the one with Selected features
 
 
+# Prediction for a model with ALL features
+y_pred = rf_fetus.predict(X_test)
+
+# Acuracy of model with all features
+accuracy_score(y_test, y_pred)    # - for the one with ALL features
+
+
+#Conclusion
+"""" In the end, the model that has all the features has the best accuracy. 
+The model with selected features however has a good accuracys as well and 
+is more advantageous since it used less resources to have an almost equal
+accuracy. - USE DIMENSIONALITY REDUCTION -by Ronald Chitauro
+"""
 
